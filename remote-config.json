@@ -1,5 +1,5 @@
 {
   "schemaVersion": 2,
-  "adsEnabled": false,
+  "adsEnabled": true,
   "initialExposureTime": 5.0
 }
