@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "adsEnabled": false,
   "initialExposureTime": 5.0,
-  "traceFastThresholdSeconds": 2.5,
+  "traceFastThresholdSeconds": 3.0,
   "skipConsecutiveFastClears": 9,
   "brainAgeRatingDecay": 540.0,
   "reviveScoreThreshold": 50000,
