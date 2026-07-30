@@ -2,11 +2,11 @@
   "schemaVersion": 3,
   "adsEnabled": false,
   "initialExposureTime": 5.0,
-  "traceFastThresholdSeconds": 3.0,
+  "traceFastThresholdSeconds": 5.0,
   "skipConsecutiveFastClears": 9,
   "brainAgeRatingDecay": 540.0,
   "reviveScoreThreshold": 50000,
   "interstitialFreeRunGrace": 3,
   "interstitialMinSecondsBetween": 45.0,
-  "interstitialMaxProbability": 0.65
+  "interstitialMaxProbability": 0.7
 }
