@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glowA" cx="72%" cy="12%" r="62%">
+      <stop offset="0%"   stop-color="#2b86ff" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#2b86ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="6%" cy="88%" r="60%">
+      <stop offset="0%"   stop-color="#1454a8" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#1454a8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wordFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#bcd9f7"/>
+    </linearGradient>
+    <linearGradient id="accentFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#9fd8ff"/>
+      <stop offset="100%" stop-color="#2b86ff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#04070f"/>
+  <rect width="1200" height="630" fill="url(#glowA)"/>
+  <rect width="1200" height="630" fill="url(#glowB)"/>
+
+  <!-- faint field grid, masked to the right side where the route lives -->
+  <g stroke="#609ce0" stroke-opacity="0.09" stroke-width="1">
+    <path d="M760 0V630M824 0V630M888 0V630M952 0V630M1016 0V630M1080 0V630M1144 0V630"/>
+    <path d="M760 96H1200M760 160H1200M760 224H1200M760 288H1200M760 352H1200M760 416H1200M760 480H1200M760 544H1200"/>
+  </g>
+
+  <!-- ── The route: bloom pass, then bright core, then the head ── -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M846 132 L846 260 L942 260 L942 356 L1038 356 L1038 452 L1120 452"
+          stroke="#2b86ff" stroke-opacity="0.30" stroke-width="46"/>
+    <path d="M846 132 L846 260 L942 260 L942 356 L1038 356 L1038 452 L1120 452"
+          stroke="#78cdff" stroke-width="15"/>
+  </g>
+  <circle cx="846" cy="132" r="13" fill="#dff2ff"/>
+  <circle cx="1120" cy="452" r="21" fill="#bfe9ff" fill-opacity="0.28"/>
+  <circle cx="1120" cy="452" r="12" fill="#eaf8ff"/>
+
+  <!-- nodes scattered through the field -->
+  <g fill="#9ecdff" fill-opacity="0.55">
+    <circle cx="790" cy="196" r="3"/><circle cx="900" cy="176" r="2.4"/>
+    <circle cx="1006" cy="212" r="3"/><circle cx="1108" cy="180" r="2.2"/>
+    <circle cx="800" cy="330" r="2.6"/><circle cx="890" cy="428" r="3"/>
+    <circle cx="1092" cy="316" r="2.4"/><circle cx="978" cy="516" r="2.8"/>
+    <circle cx="820" cy="520" r="2.2"/><circle cx="1140" cy="560" r="2.6"/>
+  </g>
+
+  <!-- ── Wordmark ── -->
+  <g transform="translate(86,120)">
+    <rect x="0" y="0" width="34" height="34" rx="9" fill="#08152a" stroke="#2b86ff" stroke-opacity="0.5"/>
+    <path d="M11 8 L11 18 L17 18 L17 24 L23 24" fill="none" stroke="#3d9bff"
+          stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="48" y="24" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+          font-size="21" font-weight="600" fill="#8ba3c0" letter-spacing="1">ASTRAKNIGHT</text>
+  </g>
+
+  <!-- ── Title ── -->
+  <text x="86" y="286" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="96" font-weight="700" fill="url(#wordFade)" letter-spacing="-3">Mind Trace</text>
+  <text x="86" y="372" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="40" font-weight="600" fill="url(#accentFade)" letter-spacing="-1">Remember the path,</text>
+  <text x="86" y="422" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="40" font-weight="600" fill="url(#accentFade)" letter-spacing="-1">then draw it back.</text>
+
+  <text x="86" y="492" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="25" font-weight="400" fill="#8ba3c0">A memory game for Android. Free on Google Play.</text>
+
+  <!-- ── Pill ── -->
+  <g transform="translate(86,524)">
+    <rect x="0" y="0" width="214" height="46" rx="23" fill="#2b86ff" fill-opacity="0.12"
+          stroke="#2b86ff" stroke-opacity="0.45"/>
+    <circle cx="26" cy="23" r="5" fill="#5fd0ff"/>
+    <text x="44" y="30" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+          font-size="19" font-weight="600" fill="#5fd0ff">4×6 → 6×8 → ∞</text>
+  </g>
+</svg>

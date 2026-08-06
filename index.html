@@ -3,478 +3,641 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Astraknight — Independent Game Studio</title>
-<meta name="description" content="Astraknight is an independent game studio crafting sharp, minimal mobile games. Home of Mind Trace.">
-<meta name="theme-color" content="#0b0b0e">
+
+<!-- ── SEO ──────────────────────────────────────────────────────────────
+     The brand name leads the title. "Mind Trace" previously appeared in no
+     title, no h1, and one body sentence, which is why the site never
+     surfaced for its own product name. -->
+<title>Mind Trace — Memory Path Game for Android | Astraknight</title>
+<meta name="description" content="Mind Trace is a free Android memory game: watch a path light up the grid, then trace it back from memory. Boards grow from 4×6 to 6×8, then run endless.">
 <link rel="canonical" href="https://astraknight.com/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Astraknight">
+<meta name="theme-color" content="#04070f">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Astraknight">
-<meta property="og:title" content="Astraknight — Independent Game Studio">
-<meta property="og:description" content="Sharp, minimal mobile games. Home of Mind Trace.">
+<meta property="og:title" content="Mind Trace — Memory Path Game for Android">
+<meta property="og:description" content="Watch a path light up the grid, then trace it back from memory. Free on Google Play, from independent studio Astraknight.">
 <meta property="og:url" content="https://astraknight.com/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23131316'/%3E%3Ctext x='32' y='45' font-family='Helvetica,Arial,sans-serif' font-size='36' font-weight='700' fill='%23ececee' text-anchor='middle'%3E//%3C/text%3E%3C/svg%3E">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mind Trace — Memory Path Game for Android">
+<meta name="twitter:description" content="Watch a path light up the grid, then trace it back from memory. Free on Google Play.">
+<!-- Social preview. Absolute URLs are required — scrapers do not resolve
+     relative paths. Width/height let a card reserve space before the image
+     lands, and og:image:alt is read aloud by screen readers on some
+     platforms. Source vector: og-cover.svg, rasterised at 1200×630. -->
+<meta property="og:image" content="https://astraknight.com/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="Mind Trace — remember the path, then draw it back. A memory game for Android, free on Google Play.">
+<meta name="twitter:image" content="https://astraknight.com/og-cover.png">
+<meta name="twitter:image:alt" content="Mind Trace — remember the path, then draw it back.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%2306101f'/%3E%3Cpath d='M20 14 L20 34 L32 34 L32 46 L44 46' fill='none' stroke='%233d9bff' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
+  /* Dark only, by request. Electric blue on a near-black with a blue bias —
+     the neutral is picked, not inherited, so the accent sits in the ground
+     rather than on top of it. */
   :root {
-    --bg:       #131316;
-    --bg-2:     #18181c;
-    --bg-3:     #1e1e23;
-    --line:     rgba(255, 255, 255, 0.08);
-    --line-2:   rgba(255, 255, 255, 0.16);
-    --text:     #ececee;
-    --dim:      #9a9aa2;
-    --faint:    #5b5b63;
+    --void:     #04070f;
+    --deep:     #070d1a;
+    --panel:    rgba(17, 34, 61, 0.45);
+    --hair:     rgba(96, 156, 224, 0.16);
+    --hair-2:   rgba(96, 156, 224, 0.30);
+    --electric: #2b86ff;
+    --cyan:     #5fd0ff;
+    --ice:      #e6f1ff;
+    --slate:    #8ba3c0;
+    --dim:      #5f7791;
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --shell: 1180px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #0b0b0e; color: var(--text);
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
+    font-family: "Manrope", system-ui, -apple-system, sans-serif;
+    background: var(--void); color: var(--ice);
+    line-height: 1.65; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
+  h1, h2, h3, .display { font-family: "Sora", system-ui, sans-serif; letter-spacing: -0.035em; line-height: 1.08; }
 
-  /* Matte charcoal depth: near-black canvas, soft grey light from above,
-     heavy edge vignette. Monochrome throughout. */
-  .vignette {
-    position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  /* Ambient bloom — two soft blue fields, no animation loop running behind
+     the fold for its own sake. */
+  .aura { position: fixed; inset: 0; z-index: -2; pointer-events: none;
     background:
-      radial-gradient(ellipse 95% 60% at 50% -8%, #202025 0%, #17171b 36%, #101013 64%, #0b0b0e 100%);
+      radial-gradient(ellipse 60% 44% at 62% 4%,  rgba(43, 134, 255, 0.26) 0%, transparent 62%),
+      radial-gradient(ellipse 50% 40% at 8% 34%,  rgba(43, 134, 255, 0.13) 0%, transparent 62%),
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(20, 84, 168, 0.20) 0%, transparent 66%);
   }
-  .vignette::after {
-    content: ""; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 120% 90% at 50% 25%, transparent 48%, rgba(0,0,0,0.6) 100%);
-  }
-
-  /* ── Scene: matte orbs, corner light sweep, dot field, dust ────────── */
-  .scene { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-  .orb {
-    position: absolute; border-radius: 50%;
-    background: radial-gradient(circle at 32% 26%, #38383f 0%, #232328 42%, #17171b 68%, #121215 100%);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.06);
-    animation: drift 14s ease-in-out infinite alternate;
-    will-change: transform;   /* transform-only animation → stays on the compositor */
-  }
-  .orb-a { width: 300px; height: 300px; top: 6%; right: -90px; animation-delay: 0s; }
-  .orb-b { width: 64px;  height: 64px;  top: 44%; right: 22%;  animation-delay: -5s; }
-  .orb-c { width: 150px; height: 150px; bottom: 9%; left: -40px; animation-delay: -9s; }
-  @keyframes drift { from { transform: translateY(-10px); } to { transform: translateY(12px); } }
-
-  .sweep {
-    position: absolute; right: -12%; bottom: -16%; width: 60vw; height: 55vh;
-    background:
-      linear-gradient(295deg, transparent 38%, rgba(255,255,255,0.05) 39.5%, transparent 42%),
-      linear-gradient(295deg, transparent 48%, rgba(255,255,255,0.035) 49.5%, transparent 53%),
-      linear-gradient(295deg, transparent 58%, rgba(255,255,255,0.02) 60%, transparent 65%);
-    transform: rotate(-4deg);
-  }
-  .dots {
-    position: absolute; top: 46%; right: 8%; width: 180px; height: 180px; opacity: 0.5;
-    background-image: radial-gradient(rgba(255,255,255,0.16) 1px, transparent 1.4px);
-    background-size: 14px 14px;
-    mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 72%);
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 72%);
-  }
-  .dust, .dust::before, .dust::after {
-    content: ""; position: absolute; width: 2px; height: 2px; border-radius: 50%;
-    background: rgba(255,255,255,0.28);
-  }
-  .dust { top: 32%; left: 18%; box-shadow: 40vw 18vh 0 -0.5px rgba(255,255,255,0.2), 12vw 42vh 0 rgba(255,255,255,0.14), 55vw 55vh 0 -0.5px rgba(255,255,255,0.18), 28vw -8vh 0 rgba(255,255,255,0.12); }
-  .grain {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  .grid-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+    background-image: linear-gradient(rgba(96,156,224,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(96,156,224,0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 78%);
   }
 
-  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 28px; }
+  .shell { max-width: var(--shell); margin: 0 auto; padding: 0 clamp(20px, 4vw, 44px); }
+  ::selection { background: rgba(43,134,255,0.4); color: #fff; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
 
-  ::selection { background: rgba(255,255,255,0.85); color: #111; }
-
-  /* ── Nav ─────────────────────────────────────────────────────────── */
+  /* ── Header ─────────────────────────────────────────────────────────── */
   header {
-    position: sticky; top: 0; z-index: 10;
-    background: linear-gradient(180deg, rgba(13,13,16,0.97), rgba(16,16,19,0.92));
-    border-bottom: 1px solid;
-    border-image: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent) 1;
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(4, 7, 15, 0.72);
+    backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border-bottom: 1px solid var(--hair);
   }
-  nav { display: flex; align-items: center; justify-content: space-between; height: 62px; }
-  .brand {
-    position: relative; isolation: isolate;
-    text-decoration: none; color: var(--text);
-    font-weight: 600; font-size: 1.02rem; letter-spacing: -0.01em;
-    /* Glow lives entirely in text-shadow: a filter here would force the
-       sticky header onto its own compositing path every scroll frame. */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.28),
-                 0 0 18px rgba(255, 255, 255, 0.4),
-                 0 0 36px rgba(200, 255, 255, 0.15);
-  }
-  /* Logo glyph: two slashes in light grey, sitting behind "ni" in Astraknight. */
-  .brand::after {
-    content: "//"; position: absolute; z-index: -1; pointer-events: none;
-    left: 60px; top: 50%; transform: translateY(-50%) scaleY(1.3);
-    font-size: 1.4em; font-weight: 600; letter-spacing: -0.06em;
-    line-height: 1; color: rgba(255, 255, 255, 0.45);
-  }
-  .nav-links { display: flex; gap: 28px; }
-  .nav-links a {
-    color: var(--dim); text-decoration: none; font-size: 0.88rem;
-    padding: 10px 0;   /* widen the tap target without moving the layout */
-    transition: color 0.2s;
-  }
-  .nav-links a:hover, .nav-links a:focus-visible { color: var(--text); }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 66px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: "Sora", sans-serif; font-weight: 700; font-size: 1.02rem; letter-spacing: -0.02em; }
+  .brand svg { flex: none; }
+  .brand small { display: block; font-family: "Manrope", sans-serif; font-weight: 500; font-size: 0.58rem; letter-spacing: 0.22em; color: var(--dim); text-transform: uppercase; }
+  .nav-links { display: flex; gap: 26px; }
+  .nav-links a { color: var(--slate); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 180ms ease; }
+  .nav-links a:hover { color: var(--ice); }
 
-  /* Hover underline with a 1D spotlight: a thin rule that scales in on
-     hover, brightest at the cursor's X (--mx) and fading along its length. */
-  .nav-links a, .foot-links a, .textlink { position: relative; }
-  .nav-links a::after, .foot-links a::after, .textlink::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px;
-    background: radial-gradient(70px 3px at var(--mx, 50%) 50%,
-                rgba(255,255,255,0.95), rgba(255,255,255,0.28) 55%, rgba(255,255,255,0.07) 100%);
-    box-shadow: 0 0 9px rgba(255,255,255,0.35);
-    transform: scaleX(0); opacity: 0; pointer-events: none;
-    transition: transform 0.25s ease, opacity 0.2s ease;
+  /* ── Buttons ────────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
+    font-weight: 600; font-size: 0.92rem; padding: 13px 24px; border-radius: 12px;
+    background: linear-gradient(180deg, #4a9bff, #1a6fe8); color: #fff; border: 0; cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 10px 30px -8px rgba(43,134,255,0.7), inset 0 1px 0 rgba(255,255,255,0.28);
+    transition: transform 160ms var(--ease-out), box-shadow 220ms var(--ease-out);
   }
-  .nav-links a:hover::after, .foot-links a:hover::after, .textlink:hover::after {
-    transform: scaleX(1); opacity: 1;
+  .btn:hover { box-shadow: 0 14px 40px -8px rgba(43,134,255,0.9), inset 0 1px 0 rgba(255,255,255,0.35); }
+  .btn:active { transform: scale(0.97); }
+  .btn.ghost {
+    background: rgba(43,134,255,0.07); border: 1px solid var(--hair-2); color: var(--ice);
+    box-shadow: none;
   }
-  /* Padded tap targets shift the padding box; pin the underline back
-     to just below the text. */
-  .nav-links a::after { bottom: 5px; }
-  .foot-links a::after { bottom: 3px; }
+  .btn.ghost:hover { background: rgba(43,134,255,0.14); border-color: rgba(96,156,224,0.5); }
+  .btn.sm { padding: 9px 18px; font-size: 0.82rem; border-radius: 10px; }
 
-  /* ── Hero ────────────────────────────────────────────────────────── */
-  .hero {
-    min-height: calc(100svh - 62px);
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 96px 0 72px; position: relative;
+  /* ── Pills & panels ─────────────────────────────────────────────────── */
+  .pill {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em;
+    padding: 7px 15px; border-radius: 999px; color: var(--cyan);
+    background: rgba(43,134,255,0.10); border: 1px solid var(--hair-2);
   }
-  .kicker {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.76rem; color: var(--faint); letter-spacing: 0.08em;
-    margin-bottom: 28px;
+  .pill i { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+  .panel {
+    background: var(--panel); border: 1px solid var(--hair); border-radius: 18px;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   }
-  .hero h1 {
-    font-size: clamp(2.6rem, 7.2vw, 5rem);
-    font-weight: 600; letter-spacing: -0.035em; line-height: 1.06;
-    max-width: 15ch;
-    background: linear-gradient(180deg, #f4f4f6 0%, #c9c9d1 55%, #8f8f99 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
+
+  /* ── Hero ───────────────────────────────────────────────────────────── */
+  .hero { padding: clamp(56px, 8vh, 96px) 0 clamp(60px, 9vh, 110px); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: clamp(28px, 4vw, 60px); align-items: center; }
+  .hero h1 { margin-top: 22px; font-size: clamp(2.4rem, 5.4vw, 4.1rem); font-weight: 700; }
   .hero h1 em {
     font-style: normal;
-    background: linear-gradient(180deg, #77777f 0%, #4e4e56 100%);
+    background: linear-gradient(180deg, #9fd8ff 0%, var(--electric) 92%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .hero .lede {
-    margin-top: 30px; max-width: 40rem;
-    color: var(--dim); font-size: 1.08rem;
-  }
-  .hero-actions { margin-top: 44px; display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+  .hero .sub { margin-top: 20px; color: var(--slate); font-size: 1.06rem; max-width: 34rem; }
+  .hero-cta { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-meta { margin-top: 30px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 0.82rem; color: var(--dim); }
+  .hero-meta strong { color: var(--slate); font-weight: 600; }
 
-  /* Buttons: cursor-position glow. JS writes --mx/--my (px, element-local)
-     on pointermove; a masked ::before radial follows the cursor. The outer
-     bloom (box-shadow) breathes up on hover. */
-  .btn {
-    position: relative; overflow: hidden; isolation: isolate;
-    display: inline-block; text-decoration: none;
-    background: linear-gradient(180deg, #ffffff 0%, #d3d3d9 100%);
-    color: #121215;
-    font-weight: 500; font-size: 0.92rem;
-    padding: 13px 28px; border-radius: 999px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),
-                0 10px 28px rgba(0,0,0,0.45),
-                0 0 24px rgba(255,255,255,0.10);
-    transition: box-shadow 0.25s, transform 0.18s;
+  /* Visual: a memory trace through a neural field, drawn on canvas. The
+     subject is a path recalled through a network — not a picture of a grid. */
+  .viz { position: relative; }
+  .viz-frame { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid var(--hair); background: linear-gradient(160deg, rgba(43,134,255,0.10), rgba(4,7,15,0.6)); }
+  .viz canvas { display: block; width: 100%; height: auto; }
+  .viz-card {
+    position: absolute; padding: 13px 16px; border-radius: 14px; min-width: 132px;
+    background: rgba(7, 15, 30, 0.82); border: 1px solid var(--hair-2);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.9);
   }
-  .btn::before {
-    content: ""; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(circle 70px at var(--mx, 50%) var(--my, 50%),
-                rgba(255,255,255,0.95), transparent 75%);
-    opacity: 0; transition: opacity 0.25s;
-  }
-  .btn:hover {
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),
-                0 10px 32px rgba(0,0,0,0.5),
-                0 0 44px rgba(255,255,255,0.28);
-  }
-  .btn:hover::before { opacity: 1; }
-  .btn:active { transform: scale(0.98); }
+  .viz-card b { display: block; font-family: "Sora", sans-serif; font-size: 1.34rem; font-weight: 700; color: var(--ice); letter-spacing: -0.03em; }
+  .viz-card span { font-size: 0.68rem; color: var(--dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .viz-card.a { top: 8%;  right: -14px; }
+  .viz-card.b { bottom: 9%; left: -14px; }
 
-  .btn.ghost {
-    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
-    color: var(--text);
-    border: 1px solid var(--line-2);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
-  }
-  .btn.ghost::before {
-    background: radial-gradient(circle 80px at var(--mx, 50%) var(--my, 50%),
-                rgba(255,255,255,0.16), transparent 75%);
-  }
-  .btn.ghost:hover {
-    border-color: rgba(255,255,255,0.32);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.4), 0 0 34px rgba(255,255,255,0.12);
-  }
+  /* ── Stat strip ─────────────────────────────────────────────────────── */
+  .stats { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; }
+  .stat { padding: 20px 18px; border-radius: 14px; background: var(--panel); border: 1px solid var(--hair); }
+  .stat b { display: block; font-family: "Sora", sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.035em; }
+  .stat span { font-size: 0.74rem; color: var(--dim); }
 
-  .textlink {
-    color: var(--dim); text-decoration: none; font-size: 0.92rem;
-    padding-bottom: 2px;
-    transition: color 0.2s;
-  }
-  .textlink:hover { color: var(--text); }
-  .textlink .arr { display: inline-block; transition: transform 0.2s; margin-left: 4px; }
-  .textlink:hover .arr { transform: translateX(3px); }
+  /* ── Sections ───────────────────────────────────────────────────────── */
+  section { padding: clamp(64px, 9vh, 108px) 0; }
+  .sec-head { max-width: 44rem; margin-bottom: 44px; }
+  .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); font-weight: 700; margin-top: 16px; }
+  .sec-head p { margin-top: 16px; color: var(--slate); }
 
-  .scroll-cue {
-    position: absolute; bottom: 34px; left: 50%; transform: translateX(-50%);
-    color: var(--faint); font-family: "JetBrains Mono", monospace; font-size: 0.72rem;
-    letter-spacing: 0.14em; text-decoration: none;
-  }
-  .scroll-cue:hover { color: var(--dim); }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+  .step { padding: 26px; border-radius: 18px; background: var(--panel); border: 1px solid var(--hair); position: relative; overflow: hidden; }
+  .step::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; background: linear-gradient(90deg, transparent, var(--hair-2) 40%, transparent); }
+  .step .n { font-family: "Sora", sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--electric); letter-spacing: 0.08em; }
+  .step h3 { font-size: 1.16rem; font-weight: 600; margin: 12px 0 8px; letter-spacing: -0.02em; }
+  .step p { color: var(--slate); font-size: 0.94rem; }
 
-  /* ── Sections ────────────────────────────────────────────────────── */
-  section {
-    padding: 104px 0;
-    scroll-margin-top: 62px;   /* anchor jumps clear the sticky header */
-    border-top: 1px solid;
-    border-image: linear-gradient(90deg, transparent, var(--line-2) 30%, var(--line-2) 70%, transparent) 1;
-  }
-  .sec-head {
-    display: flex; align-items: baseline; gap: 18px; margin-bottom: 56px;
-  }
-  .sec-num {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.76rem; color: var(--faint); letter-spacing: 0.08em;
-  }
-  .sec-head h2 { font-size: 1.05rem; font-weight: 500; letter-spacing: -0.01em; }
+  .split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: clamp(20px, 3vw, 40px); align-items: stretch; }
+  .feature { padding: clamp(26px, 3vw, 40px); border-radius: 20px; background: var(--panel); border: 1px solid var(--hair); }
+  .feature h3 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); font-weight: 700; }
+  .feature p { color: var(--slate); margin-top: 14px; }
+  .ladder { margin-top: 24px; display: flex; align-items: flex-end; gap: 10px; }
+  .rung { flex: 1; border-radius: 10px 10px 6px 6px; background: linear-gradient(180deg, rgba(43,134,255,0.5), rgba(43,134,255,0.08)); border: 1px solid var(--hair-2); display: grid; place-items: end center; padding: 8px 4px; font-size: 0.7rem; color: var(--ice); font-weight: 600; }
+  .meter { margin-top: 24px; }
+  .meter-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--dim); margin-bottom: 8px; }
+  .meter-bar { height: 8px; border-radius: 99px; background: rgba(96,156,224,0.14); overflow: hidden; }
+  .meter-fill { height: 100%; width: 72%; border-radius: 99px; background: linear-gradient(90deg, var(--electric), var(--cyan)); box-shadow: 0 0 18px rgba(43,134,255,0.7); }
 
-  /* ── Game rows ───────────────────────────────────────────────────── */
-  .game {
-    display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px;
-    padding: 44px 24px; margin: 0 -24px; border-radius: 12px;
-    border-top: 1px solid;
-    border-image: linear-gradient(90deg, transparent, var(--line) 25%, var(--line) 75%, transparent) 1;
-    transition: background 0.3s;
-  }
-  .game { position: relative; }
-  .game::before {
-    content: ""; position: absolute; inset: 0; border-radius: 12px;
-    background: radial-gradient(circle 340px at var(--mx, 50%) var(--my, 50%),
-                rgba(255,255,255,0.05), transparent 70%);
-    opacity: 0; transition: opacity 0.3s; pointer-events: none;
-  }
-  .game:hover::before { opacity: 1; }
-  .game:hover {
-    background: linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.004));
-  }
-  .game:last-child {
-    border-bottom: 1px solid;
-    border-image: linear-gradient(90deg, transparent, var(--line) 25%, var(--line) 75%, transparent) 1;
-  }
-  .game-title h3 { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; }
-  .status {
-    display: inline-block; margin-top: 14px;
-    font-family: "JetBrains Mono", monospace; font-size: 0.72rem;
-    letter-spacing: 0.1em; color: var(--dim);
-    background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012));
-    border: 1px solid var(--line); border-radius: 4px; padding: 5px 10px;
-  }
-  .game-body p { color: var(--dim); font-size: 0.98rem; max-width: 34rem; }
-  .game-links { margin-top: 26px; display: flex; gap: 24px; flex-wrap: wrap; }
-  .game.soon .game-title h3 { color: var(--faint); }
-  .game.soon .status { color: var(--faint); border-color: var(--line); }
-  .game.soon p { color: var(--faint); }
+  /* ── FAQ ─────────────────────────────────────────────────────────────
+     Real <details> — keyboard accessible, works without JS, and the answers
+     are indexable text backed by FAQPage structured data. */
+  .faq { display: grid; gap: 10px; }
+  .faq details { border: 1px solid var(--hair); border-radius: 14px; background: var(--panel); overflow: hidden; }
+  .faq summary { cursor: pointer; padding: 18px 22px; font-weight: 600; font-size: 1rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--electric); font-size: 1.3rem; line-height: 1; flex: none; }
+  .faq details[open] summary::after { content: "−"; }
+  .faq p { padding: 0 22px 20px; color: var(--slate); font-size: 0.95rem; }
 
-  /* ── Studio ──────────────────────────────────────────────────────── */
-  .studio p {
-    font-size: clamp(1.25rem, 2.6vw, 1.7rem);
-    font-weight: 400; letter-spacing: -0.015em; line-height: 1.5;
-    color: var(--dim); max-width: 46rem;
+  /* ── CTA band ───────────────────────────────────────────────────────── */
+  .band { border-radius: 24px; padding: clamp(34px, 5vw, 64px); text-align: center;
+    background: linear-gradient(150deg, rgba(43,134,255,0.22), rgba(7,13,26,0.7));
+    border: 1px solid var(--hair-2); }
+  .band h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); font-weight: 700; }
+  .band p { color: var(--slate); margin: 16px auto 28px; max-width: 32rem; }
+
+  /* ── Footer ─────────────────────────────────────────────────────────── */
+  footer { border-top: 1px solid var(--hair); padding: 40px 0 52px; }
+  .foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: center; }
+  .foot nav { display: flex; gap: 22px; flex-wrap: wrap; }
+  .foot a { color: var(--slate); text-decoration: none; font-size: 0.85rem; transition: color 180ms ease; }
+  .foot a:hover { color: var(--ice); }
+  .foot small { color: var(--dim); font-size: 0.8rem; }
+
+  /* ── Responsive ─────────────────────────────────────────────────────── */
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .steps, .split { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .viz-card.a { right: 6px; } .viz-card.b { left: 6px; }
   }
-  .studio p strong { color: var(--text); font-weight: 500; }
-  .studio .contact-line { margin-top: 40px; font-size: 0.95rem; }
-
-  /* ── Footer ──────────────────────────────────────────────────────── */
-  footer {
-    border-top: 1px solid;
-    border-image: linear-gradient(90deg, transparent, var(--line-2) 30%, var(--line-2) 70%, transparent) 1;
-    padding: 40px 0 52px;
-    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.4));
-  }
-  .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
-  .foot-links { display: flex; gap: 24px; flex-wrap: wrap; }
-  .foot-links a { color: var(--dim); text-decoration: none; font-size: 0.86rem; padding: 8px 0; transition: color 0.2s; }
-  .foot-links a:hover { color: var(--text); }
-  .foot small { color: var(--faint); font-size: 0.8rem; }
-
-  a:focus-visible { outline: 2px solid var(--line-2); outline-offset: 3px; border-radius: 4px; }
-
-  /* ── Scroll reveal ───────────────────────────────────────────────── */
-  /* Hidden state is gated on the .js class so content stays visible if
-     scripts never run (blocked, failed, or reader mode). */
-  .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .js .reveal.in { opacity: 1; transform: none; }
-
-  @media (max-width: 680px) {
-    .game { grid-template-columns: 1fr; gap: 18px; padding: 36px 0; }
-    section { padding: 72px 0; }
-    .hero { padding: 64px 0 88px; }
+  @media (max-width: 520px) {
+    .stats { grid-template-columns: 1fr; }
     .foot { flex-direction: column; align-items: flex-start; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .js .reveal { opacity: 1; transform: none; transition: none; }
-    .btn, .textlink, .textlink .arr { transition: none; }
-    .orb { animation: none; will-change: auto; }
-    .nav-links a::after, .foot-links a::after, .textlink::after { transition: none; }
+    .btn { transition: none; }
   }
 </style>
-<script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-<div class="vignette" aria-hidden="true"></div>
-<div class="scene" aria-hidden="true">
-  <div class="orb orb-a"></div>
-  <div class="orb orb-b"></div>
-  <div class="orb orb-c"></div>
-  <div class="sweep"></div>
-  <div class="dots"></div>
-  <div class="dust"></div>
-</div>
-<div class="grain" aria-hidden="true"></div>
+<div class="aura" aria-hidden="true"></div>
+<div class="grid-bg" aria-hidden="true"></div>
 
 <header>
-  <div class="wrap">
-    <nav aria-label="Main">
-      <a class="brand" href="https://astraknight.com/">Astraknight</a>
-      <div class="nav-links">
-        <a href="#games">Games</a>
-        <a href="#studio">Studio</a>
-        <a href="mailto:team@astraknight.com">Contact</a>
-      </div>
+  <div class="shell nav">
+    <a class="brand" href="https://astraknight.com/">
+      <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="#08152a"/>
+        <path d="M20 14 L20 34 L32 34 L32 46 L44 46" fill="none" stroke="#3d9bff" stroke-width="7"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Astraknight<small>Independent studio</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#how">How it plays</a>
+      <a href="#progress">Progression</a>
+      <a href="#faq">FAQ</a>
+      <a href="#studio">Studio</a>
     </nav>
+    <a class="btn sm" href="https://play.google.com/store/apps/details?id=com.astraknight.mindtrace"
+       target="_blank" rel="noopener">Get Mind Trace</a>
   </div>
 </header>
 
 <main>
-  <div class="wrap">
 
-    <section class="hero" style="border-top:none;">
-      <p class="kicker">Independent game studio</p>
-      <h1>Games that leave you <em>sharper than they found you.</em></h1>
-      <p class="lede">Astraknight builds small, focused mobile games — clean
-         systems, no noise, and respect for your time. Made by one developer,
-         played in quiet moments.</p>
-      <div class="hero-actions">
-        <a class="btn" href="#games">See the games</a>
-        <a class="btn ghost" href="mailto:team@astraknight.com">Get in touch</a>
-      </div>
-      <a class="scroll-cue" href="#games" aria-hidden="true" tabindex="-1">SCROLL</a>
-    </section>
-
-    <section id="games" style="border-top:none;">
-      <div class="sec-head reveal">
-        <span class="sec-num">01</span>
-        <h2>Games</h2>
-      </div>
-
-      <article class="game reveal">
-        <div class="game-title">
-          <h3>Mind Trace</h3>
-          <span class="status">CLOSED BETA — TESTERS WANTED</span>
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <span class="pill"><i aria-hidden="true"></i>Out now on Google Play · Free</span>
+        <h1>Mind Trace: remember the path, <em>then draw it back.</em></h1>
+        <p class="sub">A memory game for Android from independent studio Astraknight.
+           A route lights up across the grid, then vanishes — and it's on you to
+           trace it from memory. Boards grow as your recall does.</p>
+        <div class="hero-cta">
+          <a class="btn" href="https://play.google.com/store/apps/details?id=com.astraknight.mindtrace"
+             target="_blank" rel="noopener">Download Mind Trace free</a>
+          <a class="btn ghost" href="#how">See how it plays</a>
         </div>
-        <div class="game-body">
-          <p>Watch a winding path light up the grid, then trace it back from
-             memory. A minimal memory game that grows with you — and quietly
-             trains your recall along the way.</p>
-          <div class="game-links">
-            <a class="textlink" href="https://groups.google.com/g/mind-trace" target="_blank" rel="noopener">Join the beta<span class="arr">→</span></a>
-            <a class="textlink" href="https://play.google.com/store/apps/details?id=com.astraknight.mindtrace" target="_blank" rel="noopener">Android<span class="arr">→</span></a>
-            <a class="textlink" href="https://play.google.com/apps/testing/com.astraknight.mindtrace" target="_blank" rel="noopener">Web opt-in<span class="arr">→</span></a>
+        <p class="hero-meta">
+          <strong>Android</strong> · <strong>Free to play</strong> · <strong>No account needed</strong>
+        </p>
+      </div>
+
+      <div class="viz">
+        <div class="viz-frame">
+          <canvas id="viz" width="720" height="560"
+                  aria-label="Animation of a glowing route being traced through a network of points, representing a remembered path."
+                  role="img"></canvas>
+        </div>
+        <div class="viz-card a"><b>6×8</b><span>Largest board</span></div>
+        <div class="viz-card b"><b>Endless</b><span>After the ladder</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats — every figure below is a real value from the game ─────── -->
+  <section style="padding-top:0">
+    <div class="shell stats">
+      <div class="stat"><b>3</b><span>Board sizes, 4×6 to 6×8</span></div>
+      <div class="stat"><b>18</b><span>Levels per ladder step</span></div>
+      <div class="stat"><b>∞</b><span>Endless tiers after</span></div>
+      <div class="stat"><b>60→18</b><span>Brain Age range</span></div>
+      <div class="stat"><b>12</b><span>Colour palettes</span></div>
+    </div>
+  </section>
+
+  <!-- ── How it plays ─────────────────────────────────────────────────── -->
+  <section id="how">
+    <div class="shell">
+      <div class="sec-head">
+        <span class="pill">How it plays</span>
+        <h2>Three seconds to learn. Considerably longer to master.</h2>
+        <p>Mind Trace strips a memory test down to one clean loop. There is no
+           tutorial to sit through and nothing to configure — the first level
+           teaches itself.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <span class="n">STEP 01</span>
+          <h3>Watch the path</h3>
+          <p>A route pours across the grid one cell at a time, then the board
+             wipes clean. How long you get to study it depends on the level.</p>
+        </article>
+        <article class="step">
+          <span class="n">STEP 02</span>
+          <h3>Trace it back</h3>
+          <p>Drag from the starting cell and follow the route from memory. The
+             fill chases your finger as you go, so the line feels like liquid
+             rather than a series of taps.</p>
+        </article>
+        <article class="step">
+          <span class="n">STEP 03</span>
+          <h3>Climb</h3>
+          <p>Clear levels to grow the board and raise your Memory Rating. Miss
+             one and you lose a life — though the first slip of a run is
+             forgiven.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Progression ──────────────────────────────────────────────────── -->
+  <section id="progress">
+    <div class="shell">
+      <div class="sec-head">
+        <span class="pill">Progression</span>
+        <h2>The board grows with you, then stops holding back.</h2>
+      </div>
+      <div class="split">
+        <article class="feature">
+          <h3>A ladder, then no ceiling</h3>
+          <p>Play opens on a 4×6 grid and steps up to 5×7 and 6×8, eighteen
+             levels at a time. Once the largest board arrives the ladder gives
+             way to endless tiers, so there is no point where the game runs out
+             of room.</p>
+          <div class="ladder" aria-hidden="true">
+            <div class="rung" style="height:64px">4×6</div>
+            <div class="rung" style="height:92px">5×7</div>
+            <div class="rung" style="height:124px">6×8</div>
+            <div class="rung" style="height:156px">∞</div>
           </div>
-        </div>
-      </article>
-
-      <article class="game soon reveal">
-        <div class="game-title">
-          <h3>Untitled</h3>
-          <span class="status">IN DEVELOPMENT</span>
-        </div>
-        <div class="game-body">
-          <p>The next Astraknight project is taking shape. It will surface
-             here first.</p>
-        </div>
-      </article>
-    </section>
-
-    <section id="studio" class="studio">
-      <div class="sec-head reveal">
-        <span class="sec-num">02</span>
-        <h2>Studio</h2>
+        </article>
+        <article class="feature">
+          <h3>Memory Rating and Brain Age</h3>
+          <p>Every run adjusts a persistent Memory Rating — it climbs when you
+             clear cleanly and slips when you don't, so it settles at an honest
+             reading rather than a high-score you set once. That rating maps to
+             a Brain Age, starting at 60 and falling as low as 18.</p>
+          <div class="meter">
+            <div class="meter-row"><span>Brain Age 60</span><span>18</span></div>
+            <div class="meter-bar"><div class="meter-fill"></div></div>
+          </div>
+        </article>
       </div>
-      <p class="reveal"><strong>One developer, zero filler.</strong> Every
-         Astraknight game starts from the same question — can this be smaller,
-         cleaner, sharper? What ships is only what survives that question.</p>
-      <p class="contact-line reveal">
-        <a class="textlink" href="mailto:team@astraknight.com">team@astraknight.com<span class="arr">→</span></a>
-      </p>
-    </section>
+    </div>
+  </section>
 
-  </div>
+  <!-- ── FAQ — indexable answers, backed by FAQPage schema below ─────── -->
+  <section id="faq">
+    <div class="shell">
+      <div class="sec-head">
+        <span class="pill">Questions</span>
+        <h2>About Mind Trace</h2>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>What is Mind Trace?</summary>
+          <p>Mind Trace is a free memory game for Android, made by independent
+             studio Astraknight. A winding path lights up across a grid and then
+             disappears; you trace it back from memory. It is designed for short
+             sessions and gets harder as your recall improves.</p>
+        </details>
+        <details>
+          <summary>How do you play Mind Trace?</summary>
+          <p>Watch the path light up cell by cell, wait for the board to clear,
+             then press on the starting cell and drag along the route you
+             remember. Complete the full path to clear the level. Backtracking
+             mid-drag is allowed, so a wrong turn is recoverable as long as you
+             haven't lifted your finger.</p>
+        </details>
+        <details>
+          <summary>Is Mind Trace free?</summary>
+          <p>Yes. Mind Trace is free to download and play on Google Play, and it
+             does not require an account to start.</p>
+        </details>
+        <details>
+          <summary>What devices does Mind Trace run on?</summary>
+          <p>Mind Trace is an Android game, available through the Google Play
+             Store. There is no iOS version at present.</p>
+        </details>
+        <details>
+          <summary>Does Mind Trace get harder?</summary>
+          <p>Yes. The grid grows from 4×6 to 5×7 to 6×8 across eighteen-level
+             steps, paths get longer and less predictable, and once you reach the
+             largest board the game continues into endless tiers that keep
+             raising the difficulty.</p>
+        </details>
+        <details>
+          <summary>What is the Memory Rating?</summary>
+          <p>A persistent score that rises and falls with how you actually
+             perform, rather than only recording your best run. It converts to a
+             Brain Age, which starts at 60 for a new player and can fall as low
+             as 18.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Studio ───────────────────────────────────────────────────────── -->
+  <section id="studio">
+    <div class="shell split">
+      <article class="feature">
+        <span class="pill">The studio</span>
+        <h3 style="margin-top:16px">One developer, zero filler</h3>
+        <p>Astraknight is an independent game studio building small, focused
+           mobile games. Every feature starts from the same question — can this
+           be smaller, cleaner, sharper? What ships is only what survives it.</p>
+        <p style="margin-top:18px"><a class="btn ghost" href="mailto:team@astraknight.com">team@astraknight.com</a></p>
+      </article>
+      <article class="feature">
+        <span class="pill">Next</span>
+        <h3 style="margin-top:16px">Untitled — in development</h3>
+        <p>The next Astraknight project is taking shape. No roadmap, no
+           countdown; when it is ready it will appear here first.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── CTA ──────────────────────────────────────────────────────────── -->
+  <section style="padding-top:0">
+    <div class="shell">
+      <div class="band">
+        <h2>Find out how good your memory actually is.</h2>
+        <p>Mind Trace is free on Google Play. First level takes about ten seconds.</p>
+        <a class="btn" href="https://play.google.com/store/apps/details?id=com.astraknight.mindtrace"
+           target="_blank" rel="noopener">Download Mind Trace free</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  <div class="wrap foot">
-    <div class="foot-links">
+  <div class="shell foot">
+    <nav aria-label="Legal">
       <a href="https://astraknight.com/privacy-policy.html">Privacy Policy</a>
+      <a href="https://astraknight.com/terms.html">Terms of Service</a>
       <a href="https://astraknight.com/data-deletion.html">Data Deletion</a>
       <a href="mailto:team@astraknight.com">Contact</a>
-    </div>
-    <small>© 2026 Astraknight</small>
+    </nav>
+    <small>© 2026 Astraknight. Mind Trace is a trademark of Astraknight.</small>
   </div>
 </footer>
 
+<!-- ── Structured data ────────────────────────────────────────────────────
+     Three graphs: the studio, the game as a MobileApplication (this is what
+     can earn an app rich result), and the FAQ (which can earn expandable
+     answers directly in search). Deliberately no aggregateRating — inventing
+     one is a manual-action risk, not a shortcut. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://astraknight.com/#studio",
+      "name": "Astraknight",
+      "url": "https://astraknight.com/",
+      "email": "team@astraknight.com",
+      "description": "Independent game studio building small, focused mobile games."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://astraknight.com/#website",
+      "url": "https://astraknight.com/",
+      "name": "Astraknight",
+      "publisher": { "@id": "https://astraknight.com/#studio" }
+    },
+    {
+      "@type": "MobileApplication",
+      "@id": "https://astraknight.com/#mindtrace",
+      "name": "Mind Trace",
+      "alternateName": "MindTrace",
+      "applicationCategory": "GameApplication",
+      "applicationSubCategory": "Puzzle",
+      "operatingSystem": "Android",
+      "url": "https://astraknight.com/",
+      "installUrl": "https://play.google.com/store/apps/details?id=com.astraknight.mindtrace",
+      "downloadUrl": "https://play.google.com/store/apps/details?id=com.astraknight.mindtrace",
+      "author": { "@id": "https://astraknight.com/#studio" },
+      "publisher": { "@id": "https://astraknight.com/#studio" },
+      "description": "A memory game for Android. A winding path lights up across a grid, then disappears — trace it back from memory. Boards grow from 4×6 to 6×8 and continue into endless tiers.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://astraknight.com/#faq",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is Mind Trace?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Mind Trace is a free memory game for Android, made by independent studio Astraknight. A winding path lights up across a grid and then disappears; you trace it back from memory." } },
+        { "@type": "Question", "name": "How do you play Mind Trace?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Watch the path light up cell by cell, wait for the board to clear, then press on the starting cell and drag along the route you remember. Complete the full path to clear the level." } },
+        { "@type": "Question", "name": "Is Mind Trace free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mind Trace is free to download and play on Google Play, and it does not require an account to start." } },
+        { "@type": "Question", "name": "What devices does Mind Trace run on?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Mind Trace is an Android game, available through the Google Play Store. There is no iOS version at present." } },
+        { "@type": "Question", "name": "Does Mind Trace get harder?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The grid grows from 4x6 to 5x7 to 6x8 across eighteen-level steps, and once you reach the largest board the game continues into endless tiers." } },
+        { "@type": "Question", "name": "What is the Memory Rating?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A persistent score that rises and falls with how you perform. It converts to a Brain Age, which starts at 60 for a new player and can fall as low as 18." } }
+      ]
+    }
+  ]
+}
+</script>
+
 <script>
-  (function () {
-    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function () {
+  "use strict";
+  var c = document.getElementById("viz");
+  if (!c || !c.getContext) return;
+  var ctx = c.getContext("2d");
+  var W = c.width, H = c.height;
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* Scroll reveal */
+  /* A field of nodes with a route threaded through it: the subject is a
+     remembered path across a network, so the picture is built from the same
+     idea rather than from a literal screenshot of the game. */
+  var NODES = 74, nodes = [], route = [], raf = null, t = 0;
+
+  for (var i = 0; i < NODES; i++) {
+    nodes.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.6 + 0.7,
+      p: Math.random() * Math.PI * 2,
+      s: Math.random() * 0.5 + 0.2
+    });
+  }
+  /* The route is a staircase down the canvas — legible as a deliberate path
+     rather than a random walk through the noise. */
+  var steps = 9, px = W * 0.22, py = H * 0.12;
+  for (var k = 0; k < steps; k++) {
+    route.push({ x: px, y: py });
+    if (k % 2 === 0) py += H * 0.11; else px += W * 0.13;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* Web of faint connections between near neighbours. */
+    ctx.lineWidth = 1;
+    for (var a = 0; a < nodes.length; a++) {
+      for (var b = a + 1; b < nodes.length; b++) {
+        var dx = nodes[a].x - nodes[b].x, dy = nodes[a].y - nodes[b].y;
+        var d2 = dx * dx + dy * dy;
+        if (d2 > 14000) continue;
+        ctx.strokeStyle = "rgba(96,156,224," + (0.16 * (1 - d2 / 14000)).toFixed(3) + ")";
+        ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); ctx.stroke();
+      }
+    }
+    for (var n = 0; n < nodes.length; n++) {
+      var o = nodes[n], tw = reduced ? 0.6 : 0.45 + 0.35 * Math.sin(t * o.s + o.p);
+      ctx.fillStyle = "rgba(150,205,255," + tw.toFixed(3) + ")";
+      ctx.beginPath(); ctx.arc(o.x, o.y, o.r, 0, 6.2832); ctx.fill();
+    }
+
+    /* The trace itself: a bloom pass under a bright core, and a head that
+       travels the route on a loop. */
+    var prog = reduced ? 1 : (t % 7) / 5;
+    prog = Math.max(0, Math.min(1, prog));
+    var totalSeg = route.length - 1, upto = prog * totalSeg;
+
+    function strokeRoute(width, style) {
+      ctx.strokeStyle = style; ctx.lineWidth = width;
+      ctx.lineJoin = "round"; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(route[0].x, route[0].y);
+      for (var s = 1; s <= totalSeg; s++) {
+        if (upto >= s) { ctx.lineTo(route[s].x, route[s].y); }
+        else if (upto > s - 1) {
+          var f = upto - (s - 1);
+          ctx.lineTo(route[s - 1].x + (route[s].x - route[s - 1].x) * f,
+                     route[s - 1].y + (route[s].y - route[s - 1].y) * f);
+          break;
+        } else break;
+      }
+      ctx.stroke();
+    }
+    strokeRoute(20, "rgba(43,134,255,0.20)");
+    strokeRoute(7,  "rgba(120,205,255,0.95)");
+
     if (!reduced) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.15 });
-      document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      var si = Math.min(totalSeg - 1, Math.floor(upto));
+      var ff = upto - si;
+      var hx = route[si].x + (route[si + 1].x - route[si].x) * ff;
+      var hy = route[si].y + (route[si + 1].y - route[si].y) * ff;
+      var g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 34);
+      g.addColorStop(0, "rgba(190,235,255,0.95)");
+      g.addColorStop(1, "rgba(95,208,255,0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(hx, hy, 34, 0, 6.2832); ctx.fill();
     }
+  }
 
-    /* Cursor-position glow: write element-local pointer coords into
-       --mx/--my; the CSS radials/underlines follow. Rect is cached on
-       pointerenter and style writes are batched through rAF, so pointermove
-       does no layout work and at most one style write per frame. Touch
-       devices have no hover, so they skip the listeners entirely. */
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      var glowEl = null, glowX = 0, glowY = 0, glowRect = null, ticking = false;
-      var applyGlow = function () {
-        ticking = false;
-        if (!glowEl || !glowRect) return;
-        glowEl.style.setProperty("--mx", (glowX - glowRect.left) + "px");
-        glowEl.style.setProperty("--my", (glowY - glowRect.top) + "px");
-      };
-      document.querySelectorAll(".btn, .game, .nav-links a, .foot-links a, .textlink").forEach(function (el) {
-        el.addEventListener("pointerenter", function () {
-          glowEl = el; glowRect = el.getBoundingClientRect();
-        }, { passive: true });
-        el.addEventListener("pointermove", function (ev) {
-          glowX = ev.clientX; glowY = ev.clientY;
-          if (!ticking) { ticking = true; requestAnimationFrame(applyGlow); }
-        }, { passive: true });
-        el.addEventListener("pointerleave", function () {
-          if (glowEl === el) { glowEl = null; glowRect = null; }
-        }, { passive: true });
-      });
-    }
-  })();
+  function loop() { t += 0.016; draw(); raf = requestAnimationFrame(loop); }
+
+  draw();
+  if (!reduced && "IntersectionObserver" in window) {
+    /* Only run the loop while the canvas is actually on screen. */
+    new IntersectionObserver(function (e) {
+      if (e[0].isIntersecting) { if (!raf) raf = requestAnimationFrame(loop); }
+      else if (raf) { cancelAnimationFrame(raf); raf = null; }
+    }, { threshold: 0 }).observe(c);
+  } else if (!reduced) { raf = requestAnimationFrame(loop); }
+})();
 </script>
 </body>
 </html>
