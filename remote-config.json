@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "adsEnabled": false,
   "initialExposureTime": 5.0,
   "traceFastThresholdSeconds": 5.0,
@@ -8,5 +8,17 @@
   "reviveScoreThreshold": 50000,
   "interstitialFreeRunGrace": 3,
   "interstitialMinSecondsBetween": 45.0,
-  "interstitialMaxProbability": 0.7
+  "interstitialMaxProbability": 0.7,
+  "divisionOneRating": 1000,
+  "divisionTwoRating": 2400,
+  "hardBiasRating": 1500,
+  "allHardRating": 2000,
+  "adjacencyPreferenceRating": 3000,
+  "ratingExposureTrim1": 1000,
+  "ratingExposureTrim2": 2000,
+  "exposureMulBreak1": 500,
+  "exposureMulBreak2": 1000,
+  "exposureMulBreak3": 2000,
+  "exposureMulBreak4": 3500,
+  "startBiasFloor": 0.15
 }
